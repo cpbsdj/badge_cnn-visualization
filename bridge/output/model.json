@@ -1,0 +1,520 @@
+{
+  "model_info": {
+    "input_size": [
+      1,
+      64,
+      64
+    ],
+    "output_size": 9,
+    "num_classes": 9,
+    "description": "CNN校徽分类器"
+  },
+  "structure": [
+    {
+      "name": "conv1",
+      "type": "conv2d",
+      "in_channels": 1,
+      "out_channels": 16,
+      "kernel_size": 3,
+      "stride": 1,
+      "padding": 1,
+      "activation": "relu"
+    },
+    {
+      "name": "batchnorm1",
+      "type": "batchnorm2d",
+      "num_features": 16
+    },
+    {
+      "name": "maxpool1",
+      "type": "maxpool2d",
+      "kernel_size": 2,
+      "stride": 2
+    },
+    {
+      "name": "conv2",
+      "type": "conv2d",
+      "in_channels": 16,
+      "out_channels": 32,
+      "kernel_size": 3,
+      "stride": 1,
+      "padding": 1,
+      "activation": "relu"
+    },
+    {
+      "name": "batchnorm2",
+      "type": "batchnorm2d",
+      "num_features": 32
+    },
+    {
+      "name": "maxpool2",
+      "type": "maxpool2d",
+      "kernel_size": 2,
+      "stride": 2
+    },
+    {
+      "name": "conv3",
+      "type": "conv2d",
+      "in_channels": 32,
+      "out_channels": 64,
+      "kernel_size": 3,
+      "stride": 1,
+      "padding": 1,
+      "activation": "relu"
+    },
+    {
+      "name": "batchnorm3",
+      "type": "batchnorm2d",
+      "num_features": 64
+    },
+    {
+      "name": "maxpool3",
+      "type": "maxpool2d",
+      "kernel_size": 2,
+      "stride": 2
+    },
+    {
+      "name": "conv4",
+      "type": "conv2d",
+      "in_channels": 64,
+      "out_channels": 64,
+      "kernel_size": 3,
+      "stride": 1,
+      "padding": 1,
+      "activation": "relu"
+    },
+    {
+      "name": "batchnorm4",
+      "type": "batchnorm2d",
+      "num_features": 64
+    },
+    {
+      "name": "maxpool4",
+      "type": "maxpool2d",
+      "kernel_size": 2,
+      "stride": 2
+    },
+    {
+      "name": "gap",
+      "type": "adaptive_avg_pool2d",
+      "output_size": 1
+    },
+    {
+      "name": "classifier",
+      "type": "linear",
+      "in_features": 64,
+      "out_features": 9
+    }
+  ],
+  "layers": [
+    {
+      "name": "conv1.0.weight",
+      "shape": [
+        16,
+        1,
+        3,
+        3
+      ],
+      "dtype": "float32",
+      "offset": 0,
+      "size_bytes": 576,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv1.0.bias",
+      "shape": [
+        16
+      ],
+      "dtype": "float32",
+      "offset": 576,
+      "size_bytes": 64,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv1.1.weight",
+      "shape": [
+        16
+      ],
+      "dtype": "float32",
+      "offset": 640,
+      "size_bytes": 64,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv1.1.bias",
+      "shape": [
+        16
+      ],
+      "dtype": "float32",
+      "offset": 704,
+      "size_bytes": 64,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv2.0.weight",
+      "shape": [
+        32,
+        16,
+        3,
+        3
+      ],
+      "dtype": "float32",
+      "offset": 768,
+      "size_bytes": 18432,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv2.0.bias",
+      "shape": [
+        32
+      ],
+      "dtype": "float32",
+      "offset": 19200,
+      "size_bytes": 128,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv2.1.weight",
+      "shape": [
+        32
+      ],
+      "dtype": "float32",
+      "offset": 19328,
+      "size_bytes": 128,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv2.1.bias",
+      "shape": [
+        32
+      ],
+      "dtype": "float32",
+      "offset": 19456,
+      "size_bytes": 128,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv3.0.weight",
+      "shape": [
+        64,
+        32,
+        3,
+        3
+      ],
+      "dtype": "float32",
+      "offset": 19584,
+      "size_bytes": 73728,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv3.0.bias",
+      "shape": [
+        64
+      ],
+      "dtype": "float32",
+      "offset": 93312,
+      "size_bytes": 256,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv3.1.weight",
+      "shape": [
+        64
+      ],
+      "dtype": "float32",
+      "offset": 93568,
+      "size_bytes": 256,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv3.1.bias",
+      "shape": [
+        64
+      ],
+      "dtype": "float32",
+      "offset": 93824,
+      "size_bytes": 256,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv4.0.weight",
+      "shape": [
+        64,
+        64,
+        3,
+        3
+      ],
+      "dtype": "float32",
+      "offset": 94080,
+      "size_bytes": 147456,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv4.0.bias",
+      "shape": [
+        64
+      ],
+      "dtype": "float32",
+      "offset": 241536,
+      "size_bytes": 256,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "conv4.1.weight",
+      "shape": [
+        64
+      ],
+      "dtype": "float32",
+      "offset": 241792,
+      "size_bytes": 256,
+      "type": "conv_weight",
+      "hotspot": null
+    },
+    {
+      "name": "conv4.1.bias",
+      "shape": [
+        64
+      ],
+      "dtype": "float32",
+      "offset": 242048,
+      "size_bytes": 256,
+      "type": "bias",
+      "hotspot": null
+    },
+    {
+      "name": "classifier.weight",
+      "shape": [
+        9,
+        64
+      ],
+      "dtype": "float32",
+      "offset": 242304,
+      "size_bytes": 2304,
+      "type": "fc_weight",
+      "hotspot": {
+        "type": "rect",
+        "pts": [
+          [
+            1724,
+            206
+          ],
+          [
+            1784,
+            206
+          ],
+          [
+            1784,
+            865
+          ],
+          [
+            1724,
+            865
+          ]
+        ],
+        "description": "全连接分类器:\n将64维输入与9个输出类别全连接\n输出9个类别的原始得分(logits)，取得分最高者为预测类别"
+      }
+    },
+    {
+      "name": "classifier.bias",
+      "shape": [
+        9
+      ],
+      "dtype": "float32",
+      "offset": 244608,
+      "size_bytes": 36,
+      "type": "bias",
+      "hotspot": {
+        "type": "rect",
+        "pts": [
+          [
+            1724,
+            206
+          ],
+          [
+            1784,
+            206
+          ],
+          [
+            1784,
+            865
+          ],
+          [
+            1724,
+            865
+          ]
+        ],
+        "description": "全连接分类器:\n将64维输入与9个输出类别全连接\n输出9个类别的原始得分(logits)，取得分最高者为预测类别"
+      }
+    }
+  ],
+  "hotspots": {
+    "input_layer": {
+      "type": "rect",
+      "pts": [
+        [
+          156,
+          402
+        ],
+        [
+          387,
+          402
+        ],
+        [
+          387,
+          633
+        ],
+        [
+          156,
+          633
+        ]
+      ],
+      "description": "输入层:接收预处理后的单通道 64×64 灰度图像"
+    },
+    "conv1": {
+      "type": "rect",
+      "pts": [
+        [
+          467,
+          206
+        ],
+        [
+          668,
+          206
+        ],
+        [
+          668,
+          865
+        ],
+        [
+          467,
+          865
+        ]
+      ],
+      "description": "第一卷积层:\n1个输入通道->16个输出通道\n卷积核大小3×3，stride=1，padding=1\n批归一化后使用ReLU激活\n最大池化2×2，stride=2"
+    },
+    "conv2": {
+      "type": "rect",
+      "pts": [
+        [
+          729,
+          206
+        ],
+        [
+          930,
+          206
+        ],
+        [
+          930,
+          865
+        ],
+        [
+          729,
+          865
+        ]
+      ],
+      "description": "第二卷积层:\n16个输入通道->32个输出通道\n卷积核大小3×3，stride=1，padding=1\n批归一化后使用ReLU激活\n最大池化2×2，stride=2"
+    },
+    "conv3": {
+      "type": "rect",
+      "pts": [
+        [
+          996,
+          206
+        ],
+        [
+          1197,
+          206
+        ],
+        [
+          1197,
+          865
+        ],
+        [
+          996,
+          865
+        ]
+      ],
+      "description": "第三卷积层:\n32个输入通道->64个输出通道\n卷积核大小3×3，stride=1，padding=1\n批归一化后使用ReLU激活\n最大池化2×2，stride=2"
+    },
+    "conv4": {
+      "type": "rect",
+      "pts": [
+        [
+          1260,
+          206
+        ],
+        [
+          1461,
+          206
+        ],
+        [
+          1461,
+          865
+        ],
+        [
+          1260,
+          865
+        ]
+      ],
+      "description": "第四卷积层:\n64个输入通道->64个输出通道\n卷积核大小3×3，stride=1，padding=1\n批归一化后使用ReLU激活\n最大池化2×2，stride=2"
+    },
+    "gap_layer": {
+      "type": "rect",
+      "pts": [
+        [
+          1549,
+          206
+        ],
+        [
+          1629,
+          206
+        ],
+        [
+          1629,
+          865
+        ],
+        [
+          1549,
+          865
+        ]
+      ],
+      "description": "全局平均池化+展平层:\n64个输入通道，每个输入通道空间尺寸为4×4\n全局平均池化将64×4×4特征图每个通道求平均\n再接展平层将64×1×1张量转化为64维向量"
+    },
+    "classifier": {
+      "type": "rect",
+      "pts": [
+        [
+          1724,
+          206
+        ],
+        [
+          1784,
+          206
+        ],
+        [
+          1784,
+          865
+        ],
+        [
+          1724,
+          865
+        ]
+      ],
+      "description": "全连接分类器:\n将64维输入与9个输出类别全连接\n输出9个类别的原始得分(logits)，取得分最高者为预测类别"
+    }
+  }
+}
