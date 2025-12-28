@@ -33,11 +33,14 @@
 
 ## 四、部署方式
 
-* docker部署
+* **前提** ：已安装 Docker（Windows 需开启 WSL2 后端）
+
+* 环境已打包成镜像cnn-sfml-final-latest，无需本地安装依赖。
+下载 Release 里的 tar 或用 docker pull 拉取后一键运行即可。
 
 
 
-* 二进制部署
+
 
 
 

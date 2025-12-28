@@ -1,31 +1,43 @@
+// .devcontainer/devcontainer.json
 {
   "name": "cnn-sfml-final",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
+
+  "image": "cnn-sfml-final:latest",
+
+  // 需要 GPU 时把下行注释去掉
+  // "runArgs": ["--gpus", "all"],
+
+  // 把当前源码目录挂进去
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
+
+  // 以非 root 用户运行（大多数官方镜像已带 vscode 用户）
   "remoteUser": "vscode",
+  "containerUser": "vscode",
+
+  // 装常用插件
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.cpptools",
-        "ms-python.python",
-        "ms-python.black-formatter",
-        "ms-vscode.cmake-tools",
-        "twxs.cmake"
-      ],
-      "settings": {
-        "cmake.configureOnOpen": true
-      }
+        "ms-vscode.cpptools",           // C/C++ IntelliSense
+        "ms-python.python",             // Python
+        "ms-python.black-formatter",    // Python 格式化
+        "ms-vscode.cmake-tools",        // CMake
+        "twxs.cmake"                    // CMake 语法高亮
+      ]
     }
   },
-  "postCreateCommand": "echo '环境配置完成'",
+
+  // 容器启动后自动执行的命令（可装额外工具）
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y git gdb ninja-build",
+
+  // 需要暴露的端口示例（Jupyter / TensorBoard …）
   "forwardPorts": [8888, 6006],
   "portsAttributes": {
     "8888": { "label": "Jupyter" },
     "6006": { "label": "TensorBoard" }
   },
+
+  // 保持容器即使 VS Code 断开也继续运行
   "shutdownAction": "stopContainer"
 }
