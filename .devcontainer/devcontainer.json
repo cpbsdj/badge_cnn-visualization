@@ -1,16 +1,12 @@
-// .devcontainer/devcontainer.json
 {
   "name": "cnn-sfml-final",
-  
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
   "remoteUser": "vscode",
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -25,8 +21,7 @@
       }
     }
   },
-
-  "postCreateCommand": "echo '环境准备完成'",
+  "postCreateCommand": "echo '环境配置完成'",
   "forwardPorts": [8888, 6006],
   "portsAttributes": {
     "8888": { "label": "Jupyter" },

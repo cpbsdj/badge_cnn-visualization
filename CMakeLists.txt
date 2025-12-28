@@ -4,27 +4,10 @@ project(digit_viz)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 自动下载依赖
-include(FetchContent)
-
-# ImGui-SFML
-FetchContent_Declare(
-    imgui-sfml
-    GIT_REPOSITORY https://github.com/SFML/imgui-sfml.git
-    GIT_TAG master
-)
-FetchContent_MakeAvailable(imgui-sfml)
-
-# nlohmann_json
-FetchContent_Declare(
-    nlohmann_json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.11.2
-)
-FetchContent_MakeAvailable(nlohmann_json)
-
-# 查找系统SFML
+# 查找系统安装的依赖
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+find_package(ImGui-SFML REQUIRED)
+find_package(nlohmann_json 3.9 REQUIRED)
 
 # 可执行文件
 add_executable(digit_viz
@@ -48,11 +31,13 @@ add_executable(digit_viz
     src/renderer/convanim/ConvAnimPanel.cpp
 )
 
-target_include_directories(digit_viz PRIVATE src)
+target_include_directories(digit_viz PRIVATE
+    src
+)
 
 target_link_libraries(digit_viz
     sfml-graphics
     sfml-window 
     sfml-system
-    ImGui-SFML
+    ImGui-SFML::ImGui-SFML
 )
