@@ -78,7 +78,8 @@ RUN git clone https://github.com/eliasdaler/imgui-sfml.git && \
     cd imgui-sfml && \
     git checkout v2.6 && \
     mkdir build && cd build && \
-    cmake .. && \
+    # 设置SFML_DIR环境变量，指向系统安装的SFML
+    cmake .. -DSFML_DIR=/usr/lib/x86_64-linux-gnu/cmake/SFML && \
     make -j$(nproc) && \
     make install
 
