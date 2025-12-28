@@ -68,10 +68,10 @@ RUN apt-get update && apt-get install -y \
 RUN git clone https://github.com/ocornut/imgui.git && \
     cd imgui && \
     git checkout v1.90.4 && \
-    mkdir build && cd build && \
-    cmake .. && \
-    make -j$(nproc) && \
-    make install
+    # 只复制文件，不进行CMake构建
+    mkdir -p /usr/local/include/imgui && \
+    cp *.h /usr/local/include/imgui/ && \
+    cp *.cpp /usr/local/include/imgui/
 
 # 克隆并安装ImGui-SFML 2.6（使用对应的tag或commit）
 RUN git clone https://github.com/eliasdaler/imgui-sfml.git && \
