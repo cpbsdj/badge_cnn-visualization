@@ -1,48 +1,104 @@
-# .devcontainer/Dockerfile
 FROM ubuntu:22.04
 
-# 安装基础工具
+# 设置非交互式前端
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 设置清华镜像源
+RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+    sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
+
+# 安装系统工具和构建依赖
 RUN apt-get update && apt-get install -y \
     build-essential \
-    cmake=3.22.1-1ubuntu1.22.04.2 \
-    g++=4:11.2.0-1ubuntu1 \
-    gdb=12.1-0ubuntu1~22.04.2 \
-    git=1:2.34.1-1ubuntu1.15 \
-    ninja-build \
+    cmake \
+    git \
+    wget \
     pkg-config \
-    python3=3.10.6-1~22.04.1 \
-    python3-pip=22.0.2+dfsg-1ubuntu0.7 \
+    software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
-# 安装SFML
+# 安装SFML 2.5.1（精确版本匹配）
 RUN apt-get update && apt-get install -y \
     libsfml-dev=2.5.1+dfsg-2 \
-    libgl1-mesa-dev \
-    libglfw3-dev \
+    libsfml-audio2.5=2.5.1+dfsg-2 \
+    libsfml-graphics2.5=2.5.1+dfsg-2 \
+    libsfml-network2.5=2.5.1+dfsg-2 \
+    libsfml-system2.5=2.5.1+dfsg-2 \
+    libsfml-window2.5=2.5.1+dfsg-2 \
     && rm -rf /var/lib/apt/lists/*
 
-# 安装PyTorch
-RUN pip3 install torch==2.9.0+cpu torchvision==0.24.0+cpu torchaudio==2.9.0+cpu --index-url https://download.pytorch.org/whl/cpu
+# 安装图形库依赖
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-dev \
+    libx11-dev \
+    libxcb1-dev \
+    libxrandr-dev \
+    libxinerama-dev \
+    libxcursor-dev \
+    libxi-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# 安装ImGui-SFML
-RUN git clone https://github.com/SFML/imgui-sfml.git /tmp/imgui-sfml \
-    && cd /tmp/imgui-sfml \
-    && mkdir build && cd build \
-    && cmake .. \
-    && make -j$(nproc) \
-    && make install \
-    && rm -rf /tmp/imgui-sfml
+# 安装nlohmann_json 3.10.5
+RUN apt-get update && apt-get install -y \
+    nlohmann-json3-dev=3.10.5-2 \
+    && rm -rf /var/lib/apt/lists/*
 
-# 安装nlohmann_json
-RUN git clone https://github.com/nlohmann/json.git /tmp/json \
-    && cd /tmp/json \
-    && mkdir build && cd build \
-    && cmake .. -DJSON_BuildTests=OFF \
-    && make -j$(nproc) \
-    && make install \
-    && rm -rf /tmp/json
+# 安装Python和PyTorch 2.9.0+cpu
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
-# 创建非root用户
-RUN useradd -m -s /bin/bash vscode
-USER vscode
+RUN pip3 install --index-url https://download.pytorch.org/whl/cpu \
+    torch==2.9.0+cpu \
+    torchvision==0.24.0+cpu \
+    torchaudio==2.9.0+cpu \
+    numpy==2.1.2
+
+# 从源码安装ImGui 1.90.4和ImGui-SFML 2.6（与你的环境完全一致）
+WORKDIR /tmp
+
+# 安装构建依赖
+RUN apt-get update && apt-get install -y \
+    libglfw3-dev \
+    libgles2-mesa-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# 克隆并安装ImGui 1.90.4
+RUN git clone https://github.com/ocornut/imgui.git && \
+    cd imgui && \
+    git checkout v1.90.4 && \
+    mkdir build && cd build && \
+    cmake .. && \
+    make -j$(nproc) && \
+    make install
+
+# 克隆并安装ImGui-SFML 2.6（使用对应的tag或commit）
+RUN git clone https://github.com/eliasdaler/imgui-sfml.git && \
+    cd imgui-sfml && \
+    git checkout v2.6 && \
+    mkdir build && cd build && \
+    cmake .. && \
+    make -j$(nproc) && \
+    make install
+
+# 验证安装
+RUN echo "=== 验证安装版本 ===" && \
+    echo "ImGui版本:" && grep "IMGUI_VERSION" /usr/local/include/imgui.h | head -1 && \
+    echo "ImGui-SFML文件:" && ls -la /usr/local/include/imgui-SFML.h && \
+    ls -la /usr/local/lib/cmake/ImGui-SFML/ && \
+    echo "安装完成"
+
+# 设置工作目录
 WORKDIR /workspace
+
+# 复制项目文件
+COPY . .
+
+# 创建构建目录并编译
+RUN mkdir -p build && cd build && \
+    cmake .. && \
+    make -j$(nproc)
+
+# 设置默认运行命令
+CMD ["./build/digit_viz"]
